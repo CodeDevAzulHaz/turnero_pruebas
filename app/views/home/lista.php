@@ -35,12 +35,12 @@
                 </a>
             </div>
             <div class="card-body">
-                <?php if ($this->session->get('message')): ?>
+                 <?php if ($this->session->get('message')): ?>
                     <div class="alert alert-info alert-dismissible fade show">
                         <?php echo $this->session->get('message'); ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                <?php endif; ?>
+                <?php endif; ?> 
 
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -69,22 +69,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ( !empty($data['usuarios']) ) : ?>
+                            
                             <?php foreach ($data['usuarios'] as $usuario): ?>
                                 <tr>
-                                    <td><?php echo $usuario['username']; ?></td>
-                                    <td><?php echo $usuario['nombre']; ?></td>
-                                    <td><?php echo $usuario['ciudad']; ?></td>
-                                    <td><?php echo $usuario['telefono']; ?></td>
+                                    <td><?php echo $usuario->username ?></td>
+                                    <td><?php echo $usuario->nombre ?></td>
+                                    <td><?php echo $usuario->ciudad ?></td>
+                                    <td><?php echo $usuario->telefono ?></td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="/usuarios/editar/<?php echo $usuario['id']; ?>" 
+                                            <a href="/usuarios/editar/<?php echo $usuario->id ?>" 
                                                class="btn btn-primary btn-sm" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" 
                                                     class="btn btn-danger btn-sm" 
-                                                    onclick="confirmarEliminar(<?php echo $usuario['id']; ?>)"
+                                                    onclick="confirmarEliminar(<?php echo $usuario->id ?>)"
                                                     title="Eliminar">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -92,18 +92,11 @@
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
-                            <?php endif; ?>
+                           
                         </tbody>
                     </table>
                 </div>
-                 <?php if ( !empty($data['usuario']) ) : ?>
-            <?php 
-                echo "<pre>";
-                print_r($data['usuario']);
-                echo "</pre>";
-
-             ?>
-            <?php endif; ?> 
+             
             </div>
         </div>
 
