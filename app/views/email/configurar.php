@@ -269,14 +269,15 @@ a {
 
   <section id="dashboard">
 
+  <form method="post">
+
       <div class="widget">
 
         <p>Ingrese el EMAIL y la CONTRASEÑA desde donde se enviarán las confirmaciones de reservas.
          <br>Complete los campos para configurar el envío de emails.</p>
          <div class="cuadrados">
           <div id="cuadrado">
-            <form method="post">
-
+           
               <?php 
               // echo "<pre>";
 
@@ -317,8 +318,8 @@ a {
               <label>encryption:</label>
               <input type="text" id="encryption" name="encryption" placeholder="">
               <span class="error" id="encryptionError"></span>
-             <button type="submit" id="guardarBtn">Ver</button>
-            </form>
+             <button type="button" id="guardarBtn">Ver</button>
+
            
           </div>
         </div>
@@ -347,7 +348,9 @@ a {
         <p>&copy; 2024 <a href="https://miturnero.com/">MiTurnero</a>. Todos los derechos reservados.</p>
       </div>
     </div>
-    <button id="enviarBtn" style="display: none;">Confirmar</button>
+    <button id="enviarBtn"  type="submit"  style="display: none; margin: auto">Confirmar</button>
+
+  </form>
 
   </section>
 </main>
