@@ -113,11 +113,14 @@ class Email extends Controller {
 
        
 
-        if ($userId) {
+         if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
+        {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
         // Datos del correo electrónico
-            $email_cols = array(
-            array('id', $_POST['$id']),
-            array('user_id', $_POST['$userId']), // Usar el ID del usuario insertado
+            $user_cols = array(
+            // array('id', $_POST['$id']),
+            // array('user_id', $_POST['$userId']), // Usar el ID del usuario insertado
             array('email', $_POST['email']),
             array('password', $_POST['password']),
             array('host', $_POST['host']),
@@ -126,7 +129,7 @@ class Email extends Controller {
             array('encryption', $_POST['encryption']),
             );
 
-             $created = $this->admin->create('user_email', $email_cols);
+             $created = $this->admin->create('user_email', $user_cols);
 
             if ($created) {
                $this->session->set('message', 'Guardado correcto.');
