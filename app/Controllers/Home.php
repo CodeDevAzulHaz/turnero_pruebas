@@ -6,7 +6,6 @@ class Home extends Controller {
 
     public function __construct() {
         $this->admin = $this->model('Main');
-        $this->email = $this->model('Emails');
         $this->session = new Session();
     }
     public function index() {
