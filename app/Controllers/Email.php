@@ -8,13 +8,14 @@ class Email extends Controller {
     public function __construct() {
         $this->admin = $this->model('Main');
         $this->email = $this->model('Emails');
+        
         $this->session = new Session();
     }
 
     public function index() {
-        ( !notSession() ) && redirect('/home/user_logged') && exit;
 
-        if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+        if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
+        {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $cols = array(
@@ -86,11 +87,100 @@ class Email extends Controller {
             'page' => __FUNCTION__
         ];
 
-        $this->view('emails/success', $data);
+        $this->view('email/success', $data);
                           
     }
 
+    
 
+    public function configurar(){
+         // table user_email
+        // id,  userId , email, password, host, sender_name, port, encryption, createdAt
+
+        if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) 
+        {
+            // $usuarios =$this->admin->readWhere('set', 'createdAt', $fecha, 'usuarios');
+            $data = [
+                'controller' => strtolower(get_called_class()),
+                'page' => __FUNCTION__,
+                // 'usuario' => $this->admin->readWhere('single', 'id', $id, 'usuarios'),
+            ];
+
+
+
+            $this->view('email/configurar', $data);
+        }
+
+       
+
+        if ($userId) {
+        // Datos del correo electrónico
+            $email_cols = array(
+            array('id', $_POST['$id']),
+            array('user_id', $_POST['$userId']), // Usar el ID del usuario insertado
+            array('email', $_POST['email']),
+            array('password', $_POST['password']),
+            array('host', $_POST['host']),
+            array('sender_name', $_POST['sender_name']),
+            array('port', $_POST['port']),
+            array('encryption', $_POST['encryption']),
+            );
+
+             $created = $this->admin->create('user_email', $email_cols);
+
+            if ($created) {
+               $this->session->set('message', 'Guardado correcto.');
+               redirect('/email/success');
+
+            // Preparar y enviar el correo
+                $data = [
+                'mensaje' => $_POST['mensaje'],
+                'enlace' => $_POST['enlace'],
+                ];
+
+                ob_start();
+                $this->view('emails/template', $data);
+                $body = ob_get_contents();
+                ob_end_clean();
+
+                $subject = $_POST['empresa'];
+
+                Mailer::send_email($_POST['email'], $subject, $body);
+                exit;
+
+            } else {
+                $this->session->set('message', 'Ocurrió un error al guardar el correo electrónico.');
+                redirect('/email/configurar');
+                exit;
+            }
+        } else {
+               $this->session->set('message', 'Ocurrió un error al guardar el usuario.');
+               redirect('/email/configurar');
+               exit;
+                }
+
+
+    
+    }
+    
+
+
+    public function saludar(){
+
+         if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) 
+        {
+            // $usuarios =$this->admin->readWhere('set', 'createdAt', $fecha, 'usuarios');
+            $data = [
+                'controller' => strtolower(get_called_class()),
+                 'page' => __FUNCTION__,
+                // 'usuario' => $this->admin->readWhere('single', 'id', $id, 'usuarios'),
+            ];
+
+            $this->view('email/saludar', $data);
+        }
+
+
+    }
     
 
 

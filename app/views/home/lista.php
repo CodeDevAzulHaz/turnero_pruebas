@@ -12,14 +12,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="/home">Sistema de Usuarios</a>
+            <a class="navbar-brand" href="<?php echo URLROOT ?>">Sistema de Usuarios</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/usuarios/lista">Lista de Usuarios</a>
+                        <a class="nav-link" href="<?php echo URLROOT ?>/home/lista">Lista de Usuarios</a>
                     </li>
                 </ul>
             </div>
@@ -30,14 +30,15 @@
         <div class="card">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Lista de Usuarios</h5>
-                <a href="/usuarios/crear" class="btn btn-light">
+                <a href="/home/crear" class="btn btn-light">
                     <i class="fas fa-plus me-2"></i>Nuevo Usuario
                 </a>
             </div>
             <div class="card-body">
-                 <?php if ($this->session->get('message')): ?>
+                <?php if ($this->session->get('message')): ?>
                     <div class="alert alert-info alert-dismissible fade show">
                         <?php echo $this->session->get('message'); ?>
+                        <?php echo $this->session->remove('message'); ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 <?php endif; ?> 
@@ -78,7 +79,7 @@
                                     <td><?php echo $usuario->telefono ?></td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="/usuarios/editar/<?php echo $usuario->id ?>" 
+                                            <a href="<?php echo URLROOT ?>/home/editar/<?php echo $usuario->id ?>" 
                                                class="btn btn-primary btn-sm" title="Editar">
                                                 <i class="fas fa-edit"></i>
                                             </a>
@@ -149,7 +150,7 @@
         }, 300));
 
         window.confirmarEliminar = (userId) => {
-            deleteForm.action = `/usuarios/eliminar/${userId}`;
+            deleteForm.action = `<?php echo URLROOT ?>/home/eliminar/${userId}`;
             deleteModal.show();
         };
     });

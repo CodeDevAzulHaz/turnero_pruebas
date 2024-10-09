@@ -12,14 +12,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="/home">Sistema de Usuarios</a>
+            <a class="navbar-brand" href="<?php echo URLROOT ?>">Sistema de Usuarios</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/usuarios/lista">Lista de Usuarios</a>
+                        <a class="nav-link" href="<?php echo URLROOT ?>/home/lista">Lista de Usuarios</a>
                     </li>
                 </ul>
             </div>
@@ -34,18 +34,19 @@
                         <h5 class="card-title mb-0">Editar Usuario</h5>
                     </div>
                     <div class="card-body">
+
                         <?php if ($this->session->get('message')): ?>
                             <div class="alert alert-info alert-dismissible fade show">
                                 <?php echo $this->session->get('message'); ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
-                        <?php endif; ?>
+                        <?php endif; ?> 
 
                         <form id="editForm" method="POST" action="">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Usuario</label>
                                 <input type="text" class="form-control" id="username" name="username" 
-                                       value="<?php echo $data['usuario']['username']; ?>" required>
+                                       value="<?php echo $data['usuario']->username; ?>" required>
                                 <div class="invalid-feedback" id="usernameError"></div>
                             </div>
                             
@@ -59,21 +60,21 @@
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" 
-                                       value="<?php echo $data['usuario']['nombre']; ?>" required>
+                                       value="<?php echo $data['usuario']->nombre; ?>" required>
                                 <div class="invalid-feedback" id="nombreError"></div>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="ciudad" class="form-label">Ciudad</label>
                                 <input type="text" class="form-control" id="ciudad" name="ciudad" 
-                                       value="<?php echo $data['usuario']['ciudad']; ?>" required>
+                                       value="<?php echo $data['usuario']->ciudad; ?>" required>
                                 <div class="invalid-feedback" id="ciudadError"></div>
                             </div>
                             
                             <div class="mb-3">
                                 <label for="telefono" class="form-label">Teléfono</label>
                                 <input type="tel" class="form-control" id="telefono" name="telefono" 
-                                       value="<?php echo $data['usuario']['telefono']; ?>" required>
+                                       value="<?php echo $data['usuario']->telefono; ?>" required>
                                 <div class="invalid-feedback" id="telefonoError"></div>
                             </div>
                             
