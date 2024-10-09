@@ -276,6 +276,24 @@ a {
          <div class="cuadrados">
           <div id="cuadrado">
             <form method="post">
+
+              <?php 
+              // echo "<pre>";
+
+              // print_r($data);
+              // echo "</pre>";
+               ?>
+
+              <select name="userId" id="userId">
+                <option value="">Seleccionar usuario</option>
+
+                <?php foreach($data['usuarios'] as $user) :?>
+                  <option value="<?php echo $user->id ?>"><?php echo $user->username ?></option>
+                <?php endforeach; ?>
+              </select>
+              <br> <br>
+
+
               <label>Correo electrónico:</label>
               <input type="email" id="email" name="email" placeholder="">
               <span class="error" id="emailError"></span>

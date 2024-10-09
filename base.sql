@@ -1,29 +1,55 @@
-DROP TABLE IF EXISTS `emails`;
+DROP DATABASE turnero;
 
-CREATE TABLE `emails` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `empresa` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `mensaje` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `enlace` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  KEY `id` (`id`)
-) ENGINE=InnoDB;
+CREATE DATABASE turnero CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
-/*Table structure for table `usuarios` */
+use turnero;
+
 
 DROP TABLE IF EXISTS `usuarios`;
 
 CREATE TABLE `usuarios` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `nombre` varchar(255) DEFAULT NULL,
-  `ciudad` varchar(255) DEFAULT NULL,
-  `telefono` varchar(255) DEFAULT NULL,
-  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  KEY `id` (`id`)
-) ENGINE=InnoDB;
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `nombre` VARCHAR(255) NOT NULL,
+  `ciudad` VARCHAR(255) NOT NULL,
+  `telefono` VARCHAR(255) NOT NULL,
+  `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=INNODB;
 
+
+
+
+DROP TABLE IF EXISTS `users_email`;
+
+CREATE TABLE `users_email` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `empresa` varchar(255) NOT NULL,
+  `mensaje` text NOT NULL,
+  `enlace` varchar(255) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_userId_email`  FOREIGN KEY (`userId`)  REFERENCES `usuarios` (`id`)
+) ENGINE=INNODB;
+
+
+DROP TABLE IF EXISTS `users_email_config`;
+
+CREATE TABLE `users_email_config` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `host` varchar(255) NOT NULL,
+  `senderName` varchar(255) NOT NULL,
+  `port` varchar(255) NOT NULL,
+  `encryption` varchar(255) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_userId_econfig`  FOREIGN KEY (`userId`)  REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB;
 
