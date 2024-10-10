@@ -4,16 +4,20 @@ class Home extends Controller {
     protected $email;
     protected $session;
 
-    public function __construct() {
+    public function __construct() 
+    {
         $this->admin = $this->model('Main');
         $this->session = new Session();
     }
-    public function index() {
+
+    public function index() 
+    {
         // ( !notSession() ) && redirect('/home/user_logged') && exit;
 
         if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+            
 
         } 
 
@@ -27,7 +31,8 @@ class Home extends Controller {
     }
 
     
-    public function registro() {
+    public function registro() 
+    {
         // ( !notSession() ) && redirect('/home/user_logged') && exit;
 
         if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
@@ -67,7 +72,8 @@ class Home extends Controller {
     }
 
 
-    public function lista(){
+    public function lista()
+    {
         if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) 
         {
             $data = [
@@ -131,7 +137,8 @@ class Home extends Controller {
     }
          
     // /home/eliminar/3
-    public function eliminar(int $id){
+    public function eliminar(int $id)
+    {
 
         if($_SERVER['REQUEST_METHOD'] == 'POST')
         {
@@ -147,7 +154,8 @@ class Home extends Controller {
         }
     }
 
-    public function buscar(){
+    public function buscar()
+    {
 
         if($_SERVER['REQUEST_METHOD'] == 'GET')
         {
