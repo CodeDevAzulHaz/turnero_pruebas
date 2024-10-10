@@ -171,15 +171,71 @@ class Email extends Controller {
 
          if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) 
         {
-            // $usuarios =$this->admin->readWhere('set', 'createdAt', $fecha, 'usuarios');
+             $usuarios = $this->admin->readAll('usuarios');
             $data = [
-                'controller' => strtolower(get_called_class()),
-                 'page' => __FUNCTION__,
+                 'controller' => strtolower(get_called_class()),
+                'page' => __FUNCTION__,
+                'usuarios' => $usuarios == null ? array() : $usuarios,
                 // 'usuario' => $this->admin->readWhere('single', 'id', $id, 'usuarios'),
             ];
 
             $this->view('email/saludar', $data);
         }
+
+        
+        if ( $_SERVER['REQUEST_METHOD'] == 'PUT' ) 
+        {
+            // $usuarios =$this->admin->readWhere('set', 'createdAt', $fecha, 'usuarios');
+            $data = [
+                'controller' => strtolower(get_called_class()),
+                'page' => __FUNCTION__,
+                // 'usuario' => $this->admin->readWhere('single', 'id', $id, 'usuarios'),
+            ];
+
+            $this->view('email/saludar', $data);
+        }
+
+
+        if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
+        {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            // Datos del correo electrónico
+            $user_cols = array(
+                array('userId', $_POST['userId']),
+                array('email', $_POST['email']),
+                array('descuento', $_POST['descuento']),
+                
+            );
+
+            $created = $this->admin->create('users_cliente_saludo', $user_cols);
+
+            if ($created) {
+               $this->session->set('message', 'Guardado correcto.');
+               redirect('/email/success');
+
+                // Preparar y enviar el correo
+                 $data = [
+                    'mensaje' => $_POST['mensaje'],
+                    'enlace' => $_POST['enlace'],
+                 ];
+
+                 ob_start();
+                 $this->view('email/template', $data);
+                 $body = ob_get_contents();
+                 ob_end_clean();
+
+                 $subject = $_POST['empresa'];
+
+                 Mailer::send_email($_POST['email'], $subject, $body);
+                 exit;
+
+            } else {
+                $this->session->set('message', 'Ocurrió un error al guardar el correo electrónico.');
+                redirect('/email/saludar');
+                exit;
+            }
+        } 
 
 
     }

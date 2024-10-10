@@ -228,23 +228,39 @@
                 <p><strong>Volver al panel</strong></p>
         </div>
             <section id="dashboard">
+              <form method="post">
                 <div class="widget">
                     <p>Felicitá a tu cliente regalandole un cupón de descuento.</p>        
                         <div class="cuadrados">
                             <div id="cuadrado">
+                              <?php 
+                                  echo "<pre>";
+
+                                  print_r($data);
+                                  echo "</pre>";
+                              ?>
+
+                                  <select name="userId" id="userId">
+                                    <option value="">Seleccionar usuario</option>
+
+                                      <?php foreach($data['usuarios'] as $user) :?>
+                                        <option value="<?php echo $user->id ?>"><?php echo $user->username ?></option>
+                                      <?php endforeach; ?>
+                                  </select>
+                                    <br> <br>
+
                                     <label>Correo electrónico:</label>
-                                    <input type="email" id="email" name="email" placeholder="" disabled>                   
+                                    <input type="email" id="email" name="email" placeholder="" >                   
                                     <label>Código de descuento:</label>
-                                    <input type="text" id="codigoDescuento" name="codigoDescuento" placeholder="" maxlength="10" >           
-                                    		
+                                    <input type="text" id="descuento" name="descuento" placeholder="" maxlength="10" >                                               		
                                     <button id="guardarBtn">Ver</button>
                             </div>
                         </div>
                 </div>
                 <div class="slide-in-top" id="container-saludo">
                     <div class="header" >
-					    <img class="balloons" src="https://www.miturnero.com/image2/globos.png" alt="Globos de cumpleaños">
-				        <h1>¡Feliz Cumpleaños <span id="nombre-cliente">[Nombre Cliente]</span>!&nbsp;&nbsp;&nbsp;</h1>
+					             <img class="balloons" src="https://www.miturnero.com/image2/globos.png" alt="Globos de cumpleaños">
+				                <h1>¡Feliz Cumpleaños <span id="nombre-cliente">[Nombre Cliente]</span>!&nbsp;&nbsp;&nbsp;</h1>
                     </div>
                     <div class="content">
                         
@@ -252,7 +268,8 @@
                     </div>
                     
                 </div>	  
-	            <button id="enviarBtn" style="display: none;">Enviar</button>
+	              <button id="enviarBtn" style="display: none;">Enviar</button>
+              </form>
             </section>
     </main>
     <!-- ROBOT -->

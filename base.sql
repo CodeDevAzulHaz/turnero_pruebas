@@ -53,3 +53,14 @@ CREATE TABLE `users_email_config` (
   CONSTRAINT `fk_userId_econfig`  FOREIGN KEY (`userId`)  REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB;
 
+DROP TABLE IF EXISTS `users_cliente_saludo`;
+
+CREATE TABLE `users_cliente_saludo` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `descuento` varchar(255) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_userId_econfig`  FOREIGN KEY (`userId`)  REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB;
