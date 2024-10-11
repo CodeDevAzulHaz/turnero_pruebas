@@ -14,7 +14,8 @@ class Home extends Controller {
     {
         // ( !notSession() ) && redirect('/home/user_logged') && exit;
 
-        if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+        if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
+        {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             
@@ -35,7 +36,8 @@ class Home extends Controller {
     {
         // ( !notSession() ) && redirect('/home/user_logged') && exit;
 
-        if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+        if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
+        {
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $cols = array(
@@ -183,6 +185,59 @@ class Home extends Controller {
         }
     }
 
+    public function cupones()
+    {
+            // usuarios_cupones: id , userId, codigo, descripcion, porcentaje, usos, validoHasta, status, createdAt 
+                // $usuarios =$this->admin->readWhere('set', 'createdAt', $fecha, 'usuarios');
+      if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) 
+      {
+        $usuarios = $this->admin->readAll('usuarios');
+        $data = [
+         'controller' => strtolower(get_called_class()),
+         'page' => __FUNCTION__,
+         'usuarios' => $usuarios == null ? array() : $usuarios
+                  // 'usuario' => $this->admin->readWhere('single', 'id', $id, 'usuarios'),
+        ];
 
+         $this->view('home/cupones', $data);
+      }
 
+      if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
+      {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $cols = array(
+          array('userId', $_POST['userId']),
+          array('codigo', $_POST['codigo']),
+          array('descripcion', $_POST['descripcion']),
+          array('porcentaje', $_POST['porcentaje']),
+          array('usos', $_POST['usos']),
+          array('validoHasta', $_POST['validoHasta']),
+          array('status', $_POST['status']),
+        );
+
+        $created = $this->admin->create('users_cupones', $cols);
+                      // var_dump($created);
+                      // exit;
+
+        if ( $created ) 
+        {
+          $this->session->set('message', 'guardado correcto.');
+          redirect('/email/success');
+          exit;
+
+        } else {
+          $this->session->set('message', 'Ocurrio un error.');
+          redirect('/email');
+          exit;
+        }
+      } 
+               // $this->view('home/cupones', $data)
+
+      // redirect('/home/cupones');
+    }
 }
+
+
+
+

@@ -252,7 +252,7 @@
               <label>Correo electrónico:</label>
               <input type="email" id="email" name="email" placeholder="" >                   
               <label>Código de descuento:</label>
-              <input type="text" id="cod_descuento" name="cod_descuento" placeholder="" maxlength="10" >                                               		
+              <input type="text" id="cod_descuento" name="cod_ descuento" placeholder="" maxlength="10" >                                               		
               <button type="button" id="guardarBtn">Ver</button>
             </div>
           </div>

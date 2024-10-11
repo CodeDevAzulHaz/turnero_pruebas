@@ -65,3 +65,20 @@ CREATE TABLE `users_cliente_saludo` (
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_userId_saludo`  FOREIGN KEY (`userId`)  REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB;
+
+
+
+DROP TABLE IF EXISTS `users_cupones`;
+
+CREATE TABLE `users_cupones` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `userId` int NOT NULL,
+  `codigo` varchar(255) NOT NULL,
+  `descripción` varchar(255) NOT NULL,
+  `usos` varchar(255) NOT NULL,
+  `validoHasta` varchar(255) NOT NULL,
+  `status` int NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_userId_cupon`  FOREIGN KEY (`userId`)  REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB;
