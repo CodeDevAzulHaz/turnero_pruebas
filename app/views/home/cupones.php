@@ -305,15 +305,15 @@ a {
       <button id="crear-nuevo"><i class="fas fa-plus"></i> Crear Nuevo</button>
       <br>
       <div class="formulario-container" id="formulario-container">
-        <form id="form-nuevo-descuento">
-          <select name="userId" id="userId">
+        <form id="form-nuevo-descuento" method="POST">
+          <!-- <select name="userId" id="userId">
             <option value="">Seleccionar usuario</option>
 
             <?php foreach($data['usuarios'] as $user) :?>
             <option value="<?php echo $user->id ?>"><?php echo $user->username ?></option>
             <?php endforeach; ?>
           </select>
-          <br> <br>
+          <br> <br> -->
 
           <div class="form-group">
             <label for="codigo">Código del Cupón:</label>
@@ -336,8 +336,11 @@ a {
             <input type="date" id="validoHasta" name="validoHasta" required>
           </div>
           <div class="form-group">
-            <label for="status">Status</label>
-            <input type="int" id="status" name="status" required>
+            <label for="status">Estado:</label>
+            <select id="status" required>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
           </div>
           <button type="submit" id="">Agregar Descuento</button>
         </form>
@@ -374,10 +377,10 @@ a {
   document.getElementById('crear-nuevo').addEventListener('click', function() {
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('form-nuevo-descuento').style.display = 'block';
-  });
+});
 
- 
-  document.getElementById('form-nuevo-descuento').addEventListener('submit', function(event) {
+
+document.getElementById('form-nuevo-descuento').addEventListener('submit', function(event) {
     event.preventDefault();
 
     var codigoCupon = document.getElementById('codigo').value.trim();
@@ -388,87 +391,86 @@ a {
     var status = document.getElementById('status').value.trim();
 
     if (!validarFormulario(codigoCupon, descripcionBeneficios, porcentajeDescuento, cantidadUsos, validoHasta, status)) {
-      alert('Por favor complete todos los campos correctamente.');
-      return;
+        alert('Por favor complete todos los campos correctamente.');
+        return;
     }
 
     var cupon = {
-      codigo: codigoCupon,
-      descripcion: descripcionBeneficios,
-      porcentaje: porcentajeDescuento,
-      usos: cantidadUsos,
-      vencimiento: validoHasta, 
-      status: status
+        codigo: codigoCupon,
+        descripcion: descripcionBeneficios,
+        porcentaje: porcentajeDescuento,
+        usos: cantidadUsos,
+        vencimiento: validoHasta,
+        status: status
     };
 
     agregarCupon(cupon);
     limpiarCamposFormulario();
     document.getElementById('form-nuevo-descuento').style.display = 'none';
-  });
+});
 
-  function validarFormulario(codigo, descripcion, porcentaje, usos, vencimiento, status) {
+function validarFormulario(codigo, descripcion, porcentaje, usos, vencimiento, status) {
     var regexCodigo = /^[a-zA-Z0-9]+$/;
-    var regexDescripcion = /^[a-zA-Z0-9\s]+$/; // Agregamos el \s para permitir espacios
+    var regexDescripcion = /^[a-zA-Z0-9\s]+$/; // Permite espacios
 
     if (!codigo || !descripcion || isNaN(porcentaje) || isNaN(usos) || !vencimiento) {
-      return false;
+        return false;
     }
 
     if (!regexCodigo.test(codigo) || !regexDescripcion.test(descripcion)) {
-      return false;
+        return false;
     }
 
     if (porcentaje < 1 || porcentaje > 100 || usos < 1) {
-      return false;
+        return false;
     }
 
     if (codigo.length < 3 || codigo.length > 10 || descripcion.length < 3 || descripcion.length > 100) {
-      return false;
+        return false;
     }
 
     return true;
-  }
+}
 
-
-
-  function agregarCupon(cupon) {
+function agregarCupon(cupon) {
     var cuponesContainer = document.getElementById('cupones-container');
 
     var cuponHTML = document.createElement('div');
     cuponHTML.classList.add('cupon');
     cuponHTML.innerHTML = `
-    <div class="cupon-icon"><i class="fas fa-tags"></i></div>
-    <div class="cupon-info">
-    <p>${cupon.codigo}</p>
-    <p>${cupon.descripcion}</p>
-    <p style="background-color: #ff8c42; border-radius: 7px; padding: 3px; display: inline-block;">${cupon.porcentaje}%</p>
-    <p style="background-color: #d0d0d0; border-radius: 7px; padding: 3px; display: inline-block;">0 a ${cupon.usos} usos</p>
-    <p style="background-color: #ddd; border-radius: 7px; padding: 3px; display: inline-block;">Vence el ${cupon.vencimiento}</p>
-    </div>
-    <div class="cupon-delete"><i class="fas fa-trash-alt"></i></div>
+        <div class="cupon-icon"><i class="fas fa-tags"></i></div>
+        <div class="cupon-info">
+            <p>${cupon.codigo}</p>
+            <p>${cupon.descripcion}</p>
+            <p style="background-color: #ff8c42; border-radius: 7px; padding: 3px; display: inline-block;">${cupon.porcentaje}%</p>
+            <p style="background-color: #d0d0d0; border-radius: 7px; padding: 3px; display: inline-block;">0 a ${cupon.usos} usos</p>
+            <p style="background-color: #ddd; border-radius: 7px; padding: 3px; display: inline-block;">Vence el ${cupon.vencimiento}</p>
+        </div>
+        <div class="cupon-delete"><i class="fas fa-trash-alt"></i></div>
     `;
 
-    alert("Cupon creado con exito");
+    alert("Cupón creado con éxito");
     cuponesContainer.appendChild(cuponHTML);
 
     cuponHTML.querySelector('.cupon-delete').addEventListener('click', function() {
-      if (confirm("¿Estás seguro de que deseas eliminar este cupón?")) {
-        cuponesContainer.removeChild(cuponHTML);
-        alert("El cupón ha sido eliminado con éxito");
-      } else {
-        alert("El cupón no se ha eliminado");
-      }
+        if (confirm("¿Estás seguro de que deseas eliminar este cupón?")) {
+            cuponesContainer.removeChild(cuponHTML);
+            alert("El cupón ha sido eliminado con éxito");
+        } else {
+            alert("El cupón no se ha eliminado");
+        }
     });
-  }
+}
 
-  function limpiarCamposFormulario() {
+function limpiarCamposFormulario() {
     document.getElementById('codigo').value = '';
     document.getElementById('descripcion').value = '';
     document.getElementById('porcentaje').value = '';
     document.getElementById('usos').value = '';
     document.getElementById('validoHasta').value = '';
     document.getElementById('status').value = '';
-  }
+}
+
 </script> 
 </body>
 </html>

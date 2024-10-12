@@ -217,8 +217,8 @@ class Home extends Controller {
         );
 
         $created = $this->admin->create('users_cupones', $cols);
-                      // var_dump($created);
-                      // exit;
+                      var_dump($created);
+                      exit;
 
         if ( $created ) 
         {
@@ -234,7 +234,7 @@ class Home extends Controller {
       } 
                // $this->view('home/cupones', $data)
 
-      // redirect('/home/cupones');
+     redirect('/home/cupones');
     }
 }
 
