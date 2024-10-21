@@ -132,10 +132,7 @@ class Home extends Controller {
                 exit;
             }
         }
-        // else 
-        // {
-        //     // condicion else
-        // }
+
     }
          
     // /home/eliminar/3
@@ -185,21 +182,38 @@ class Home extends Controller {
         }
     }
 
-    public function cupones()
+    public function error_page()
     {
             // usuarios_cupones: id , userId, codigo, descripcion, porcentaje, usos, validoHasta, status, createdAt 
                 // $usuarios =$this->admin->readWhere('set', 'createdAt', $fecha, 'usuarios');
       if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) 
       {
         $usuarios = $this->admin->readAll('usuarios');
-        $data = [
-         'controller' => strtolower(get_called_class()),
-         'page' => __FUNCTION__,
-         'usuarios' => $usuarios == null ? array() : $usuarios
-                  // 'usuario' => $this->admin->readWhere('single', 'id', $id, 'usuarios'),
-        ];
+        $data['usuarios'] = $usuarios == null ? array() : $usuarios;
 
-         $this->view('home/cupones', $data);
+         $this->view('home/error', $data);
+      }
+    }
+
+    public function cupones()
+    {
+            // usuarios_cupones: id , userId, codigo, descripcion, porcentaje, usos, validoHasta, status, createdAt 
+                // $usuarios =$this->admin->readWhere('set', 'createdAt', $fecha, 'usuarios');
+        // sintaxis javascritp ES6
+      if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) 
+      {
+        $usuarios = $this->admin->readAll('usuarios');
+        $cupones = $this->admin->readAll('users_cupones');
+
+        $data['usuarios'] = $usuarios == null ? array() : $usuarios;
+        $data['users_cupones'] = $cupones == null ? array() : $cupones;
+
+
+        // echo "<pre>";
+        // print_r($data);
+        // exit;
+
+        $this->view('home/cupones', $data);
       }
 
       if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
@@ -213,28 +227,48 @@ class Home extends Controller {
           array('porcentaje', $_POST['porcentaje']),
           array('usos', $_POST['usos']),
           array('validoHasta', $_POST['validoHasta']),
-          array('status', $_POST['status']),
         );
 
+        // var_dump($cols);
+        // exit;
+
         $created = $this->admin->create('users_cupones', $cols);
-                      var_dump($created);
-                      exit;
 
         if ( $created ) 
         {
           $this->session->set('message', 'guardado correcto.');
-          redirect('/email/success');
+          echo json_encode(['status' => 'success']);
           exit;
 
         } else {
           $this->session->set('message', 'Ocurrio un error.');
-          redirect('/email');
+          echo json_encode(['status' => 'error']);
           exit;
         }
       } 
                // $this->view('home/cupones', $data)
 
-     redirect('/home/cupones');
+     // redirect('/home/cupones');
+    }
+
+     public function lista_cupones()
+    {
+        if ( $_SERVER['REQUEST_METHOD'] == 'GET' ) 
+        {   
+
+            $data = [
+                'usuarios' => $this->admin->readAll('users_cupones'),
+                // 'password' => $this->admin->readWhere('single', 'ciudad', "oxaca", 'usuarios'),
+                'controller' => strtolower(get_called_class()),
+                'page' => __FUNCTION__
+            ];
+
+            echo "<pre>";
+            print_r($data);
+            exit;
+
+            $this->view('home/cupones', $data);
+        }
     }
 }
 

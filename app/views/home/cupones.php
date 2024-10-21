@@ -285,6 +285,57 @@ a {
    display: none;
  }
 }
+
+body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    a {
+        color: #007BFF;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
 </style>
 </head>
 
@@ -306,14 +357,14 @@ a {
       <br>
       <div class="formulario-container" id="formulario-container">
         <form id="form-nuevo-descuento" method="POST">
-          <!-- <select name="userId" id="userId">
+           <select name="userId" id="userId">
             <option value="">Seleccionar usuario</option>
 
             <?php foreach($data['usuarios'] as $user) :?>
             <option value="<?php echo $user->id ?>"><?php echo $user->username ?></option>
             <?php endforeach; ?>
           </select>
-          <br> <br> -->
+          <br> <br> 
 
           <div class="form-group">
             <label for="codigo">Código del Cupón:</label>
@@ -346,6 +397,60 @@ a {
         </form>
       </div>
       <div id="cupones-container">
+
+        
+        <!-- Aquí se mostrarán los cupones creados -->
+      </div>
+    </div>
+  </section>
+
+ 
+  <div id="menu">
+    
+  </div> 
+  <section id="dashboard">
+    <div class="widget">
+      <div class="container">
+        <h1>Listado cupones</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Codigo cupón</th>
+                    <th>Breve Descripción de Beneficios</th>
+                    <th>Porcentaje de Descuento</th>
+                    <th>Cantidad Máxima de Usos</th>
+                    <th>Válido Hasta</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php if ( !empty($data['users_cupones']) ) : ?>
+              <?php foreach($data['users_cupones'] as $cupones) : ?>
+                  <tr>
+                      <td><?php echo $cupones->userId ?></td>
+                      <td><?php echo $cupones->codigo ?></td>
+                      <td><?php echo $cupones->descripcion ?></td>
+                      <td><?php echo $cupones->porcentaje ?></td>
+                      <td><?php echo $cupones->usos ?></td>
+                      <td><?php echo $cupones->validoHasta ?></td>
+                      <td><?php echo $cupones->status ?></td>
+                  </tr>
+              <?php endforeach; ?>
+            <?php endif; ?>
+
+                <!-- Agrega más filas aquí -->
+            </tbody>
+        </table>
+      </div>
+
+            
+
+</body>
+      </div>
+      <div id="cupones-container">
+
+        
         <!-- Aquí se mostrarán los cupones creados -->
       </div>
     </div>
@@ -381,6 +486,8 @@ a {
 
 
 document.getElementById('form-nuevo-descuento').addEventListener('submit', function(event) {
+
+
     event.preventDefault();
 
     var codigoCupon = document.getElementById('codigo').value.trim();
@@ -395,81 +502,86 @@ document.getElementById('form-nuevo-descuento').addEventListener('submit', funct
         return;
     }
 
-    var cupon = {
-        codigo: codigoCupon,
-        descripcion: descripcionBeneficios,
-        porcentaje: porcentajeDescuento,
-        usos: cantidadUsos,
-        vencimiento: validoHasta,
-        status: status
-    };
+    event.target.submit();
 
-    agregarCupon(cupon);
-    limpiarCamposFormulario();
-    document.getElementById('form-nuevo-descuento').style.display = 'none';
+
+    // var cupon = {
+    //     codigo: codigoCupon,
+    //     descripcion: descripcionBeneficios,
+    //     porcentaje: porcentajeDescuento,
+    //     usos: cantidadUsos,
+    //     vencimiento: validoHasta,
+    //     status: status
+    // };
+
+    // agregarCupon(cupon);
+    // limpiarCamposFormulario();
+    // document.getElementById('form-nuevo-descuento').style.display = 'none';
+
 });
 
-function validarFormulario(codigo, descripcion, porcentaje, usos, vencimiento, status) {
-    var regexCodigo = /^[a-zA-Z0-9]+$/;
-    var regexDescripcion = /^[a-zA-Z0-9\s]+$/; // Permite espacios
+// function validarFormulario(codigo, descripcion, porcentaje, usos, vencimiento, status) {
+//     var regexCodigo = /^[a-zA-Z0-9]+$/;
+//     var regexDescripcion = /^[a-zA-Z0-9\s]+$/; // Permite espacios
 
-    if (!codigo || !descripcion || isNaN(porcentaje) || isNaN(usos) || !vencimiento) {
-        return false;
-    }
+//     if (!codigo || !descripcion || isNaN(porcentaje) || isNaN(usos) || !vencimiento) {
+//         return false;
+//     }
 
-    if (!regexCodigo.test(codigo) || !regexDescripcion.test(descripcion)) {
-        return false;
-    }
+//     if (!regexCodigo.test(codigo) || !regexDescripcion.test(descripcion)) {
+//         return false;
+//     }
 
-    if (porcentaje < 1 || porcentaje > 100 || usos < 1) {
-        return false;
-    }
+//     if (porcentaje < 1 || porcentaje > 100 || usos < 1) {
+//         return false;
+//     }
 
-    if (codigo.length < 3 || codigo.length > 10 || descripcion.length < 3 || descripcion.length > 100) {
-        return false;
-    }
+//     if (codigo.length < 3 || codigo.length > 10 || descripcion.length < 3 || descripcion.length > 100) {
+//         return false;
+//     }
 
-    return true;
-}
+//     return true;
+// }
 
-function agregarCupon(cupon) {
-    var cuponesContainer = document.getElementById('cupones-container');
+// function agregarCupon(cupon) {
+//     var cuponesContainer = document.getElementById('cupones-container');
 
-    var cuponHTML = document.createElement('div');
-    cuponHTML.classList.add('cupon');
-    cuponHTML.innerHTML = `
-        <div class="cupon-icon"><i class="fas fa-tags"></i></div>
-        <div class="cupon-info">
-            <p>${cupon.codigo}</p>
-            <p>${cupon.descripcion}</p>
-            <p style="background-color: #ff8c42; border-radius: 7px; padding: 3px; display: inline-block;">${cupon.porcentaje}%</p>
-            <p style="background-color: #d0d0d0; border-radius: 7px; padding: 3px; display: inline-block;">0 a ${cupon.usos} usos</p>
-            <p style="background-color: #ddd; border-radius: 7px; padding: 3px; display: inline-block;">Vence el ${cupon.vencimiento}</p>
-        </div>
-        <div class="cupon-delete"><i class="fas fa-trash-alt"></i></div>
-    `;
+//     var cuponHTML = document.createElement('div');
+//     cuponHTML.classList.add('cupon');
+//     cuponHTML.innerHTML = `
+//         <div class="cupon-icon"><i class="fas fa-tags"></i></div>
+//         <div class="cupon-info">
+//             <p>${cupon.codigo}</p>
+//             <p>${cupon.descripcion}</p>
+//             <p style="background-color: #ff8c42; border-radius: 7px; padding: 3px; display: inline-block;">${cupon.porcentaje}%</p>
+//             <p style="background-color: #d0d0d0; border-radius: 7px; padding: 3px; display: inline-block;">0 a ${cupon.usos} usos</p>
+//             <p style="background-color: #ddd; border-radius: 7px; padding: 3px; display: inline-block;">Vence el ${cupon.vencimiento}</p>
+//         </div>
+//         <div class="cupon-delete"><i class="fas fa-trash-alt"></i></div>
+//     `;
 
-    alert("Cupón creado con éxito");
-    cuponesContainer.appendChild(cuponHTML);
+//     alert("Cupón creado con éxito");
+//     cuponesContainer.appendChild(cuponHTML);
 
-    cuponHTML.querySelector('.cupon-delete').addEventListener('click', function() {
-        if (confirm("¿Estás seguro de que deseas eliminar este cupón?")) {
-            cuponesContainer.removeChild(cuponHTML);
-            alert("El cupón ha sido eliminado con éxito");
-        } else {
-            alert("El cupón no se ha eliminado");
-        }
-    });
-}
+//     cuponHTML.querySelector('.cupon-delete').addEventListener('click', function() {
+//         if (confirm("¿Estás seguro de que deseas eliminar este cupón?")) {
+//             cuponesContainer.removeChild(cuponHTML);
+//             alert("El cupón ha sido eliminado con éxito");
+//         } else {
+//             alert("El cupón no se ha eliminado");
+//         }
+//     });
+// }
 
-function limpiarCamposFormulario() {
-    document.getElementById('codigo').value = '';
-    document.getElementById('descripcion').value = '';
-    document.getElementById('porcentaje').value = '';
-    document.getElementById('usos').value = '';
-    document.getElementById('validoHasta').value = '';
-    document.getElementById('status').value = '';
-}
+// function limpiarCamposFormulario() {
+//     document.getElementById('codigo').value = '';
+//     document.getElementById('descripcion').value = '';
+//     document.getElementById('porcentaje').value = '';
+//     document.getElementById('usos').value = '';
+//     document.getElementById('validoHasta').value = '';
+//     document.getElementById('status').value = '';
+// }
+
 
 </script> 
 </body>
